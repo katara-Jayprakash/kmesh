@@ -1,0 +1,32 @@
+name: CI Build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.20.x'
+      - name: Go mod tidy
+        run: go mod tidy
+      - name: Build
+        run: go build ./...
+      - name: Save logs
+        if: always()
+        run: |
+          mkdir -p artifacts
+          echo "GO version: $(go version)" > artifacts/build.log
+          go env >> artifacts/build.log
+          echo "--- Build Directory ---" >> artifacts/build.log
+          ls -la >> artifacts/build.log
+      - name: Upload build logs
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-logs
+          path: artifacts
