@@ -17,6 +17,11 @@ jobs:
         run: go mod tidy
       - name: Build
         run: go build ./...
+      - name: Run e2e tests
+        run: |
+          if [ -f test/e2e/run_test.sh ]; then
+            ./test/e2e/run_test.sh --build-image-clean || true
+          fi
       - name: Save logs
         if: always()
         run: |
@@ -25,6 +30,10 @@ jobs:
           go env >> artifacts/build.log
           echo "--- Build Directory ---" >> artifacts/build.log
           ls -la >> artifacts/build.log
+          echo "--- e2e logs ---" >> artifacts/build.log
+          if [ -d test/e2e ]; then
+            find test/e2e -name "*.log" -exec cat {} \; >> artifacts/build.log 2>/dev/null || true
+          fi
       - name: Upload build logs
         uses: actions/upload-artifact@v3
         with:

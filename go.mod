@@ -32,7 +32,7 @@ require (
 	google.golang.org/protobuf v1.36.11
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	istio.io/api v1.28.2
-	istio.io/istio v0.0.0-20260115010733-9a39f613f918
+	istio.io/istio v1.28.2
 	istio.io/pkg v0.0.0-20250718200944-0aab346caa39
 	k8s.io/api v0.35.0
 	k8s.io/apimachinery v0.35.0
